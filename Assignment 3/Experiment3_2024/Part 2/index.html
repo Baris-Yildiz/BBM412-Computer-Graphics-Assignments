@@ -1,0 +1,77 @@
+<html lang="en">
+<head>
+  <title>Experiment 3</title>
+  <meta charset="UTF-8"   >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    #container {
+      width: 100%;
+      height: 85%;
+      display: flex;
+    }
+
+    #drawDiv {
+      border-style: solid;
+      width: 50%;
+    }
+
+    #glCanvas {
+      cursor: crosshair;
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    #buttonDiv {
+      padding-left: 20px;
+    }
+
+    .buttonDivButton {
+      height: 25px;
+      padding-top: 0;
+    }
+  </style>
+  <script src = "src/shaders.js" defer></script>
+  <script src = "src/classes.js" defer></script>
+  <script src = "src/triangulation.js" defer></script>
+  <script src = "src/app.js" defer></script>
+</head>
+<body>
+<div id="container">
+  <div id="drawDiv">
+    <canvas id="glCanvas"></canvas>
+  </div>
+  <div id="buttonDiv">
+    <div>
+      <input onchange="setColor(this.value)" class="buttonDivButton" type="color" aria-label="colorPicker" value="#00ff00">
+      <button onclick="setMode(MODE.DRAW)" class="buttonDivButton">Draw</button>
+      <button onclick="setMode(MODE.CLEAR)" class="buttonDivButton">Clear</button>
+    </div>
+
+    <div>
+      <button onclick="displaceObject(DISPLACEMENT.RIGHT)" class="buttonDivButton">Right</button>
+      <button onclick="displaceObject(DISPLACEMENT.LEFT)" class="buttonDivButton">Left</button>
+      <button onclick="displaceObject(DISPLACEMENT.UP)" class="buttonDivButton">Up</button>
+      <button onclick="displaceObject(DISPLACEMENT.DOWN)" class="buttonDivButton">Down</button>
+    </div>
+
+    <div>
+      <button onclick="setAngleChange(ROTATION.CLOCKWISE)" class="buttonDivButton">Clockwise</button>
+      <button onclick="setAngleChange(ROTATION.COUNTERCLOCKWISE)" class="buttonDivButton">Counterclockwise</button>
+    </div>
+
+    <div>
+      <label for="scaleSlider">Scale</label>
+      <input onchange="setScale(this.value/(this.max/2))" class="buttonDivButton" type="range" id="scaleSlider"
+             aria-label="scaleSlider" min="1" max="7" value="1">
+    </div>
+
+    <div>
+      <button onclick="setMode(MODE.FILL)" class="buttonDivButton">Fill</button>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

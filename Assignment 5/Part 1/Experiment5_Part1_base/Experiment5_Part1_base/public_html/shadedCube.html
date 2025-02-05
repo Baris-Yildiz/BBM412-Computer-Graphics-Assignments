@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"></head><body><button id="ButtonX">Rotate X</button>
+<button id="ButtonY">Rotate Y</button>
+<button id="ButtonZ">Rotate Z</button>
+<button id="ButtonT">Stop Rotation</button>
+<button onclick="SetLightPosition(0.5, 0, 0)">Light X+</button>
+<button onclick="SetLightPosition(-0.5, 0, 0)">Light X-</button>
+<button onclick="SetLightPosition(0, 0.5, 0)">Light Y+</button>
+<button onclick="SetLightPosition(0, -0.5, 0)">Light Y-</button>
+<button onclick="SetLightPosition(0, 0, 0.5)">Light Z+</button>
+<button onclick="SetLightPosition(0, 0, -0.5)">Light Z-</button>
+
+<script id="vertex-shader" type="x-shader/x-vertex">#version 300 es
+in  vec4 vPosition;
+in  vec3 vNormal;
+in  vec2 vTexCoords;
+
+out vec2 fTexCoords;
+out vec4 fColor;
+
+uniform vec4 ambientProduct, diffuseProduct, specularProduct;
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+uniform vec4 lightPosition;
+uniform float shininess;
+void main()
+{
+
+    
+    vec3 pos = -(modelViewMatrix * vPosition).xyz;
+    
+    //fixed light postion
+    
+    vec3 light = lightPosition.xyz;
+    vec3 L = normalize( light - pos );
+
+	
+    vec3 E = normalize( -pos );
+    vec3 H = normalize( L + E );
+    
+    vec4 NN = vec4(vNormal,0);
+
+    // Transform vertex normal into eye coordinates
+       
+    vec3 N = normalize( (modelViewMatrix*NN).xyz);
+
+    // Compute terms in the illumination equation
+    vec4 ambient = ambientProduct;
+
+    float Kd = max( dot(L, N), 0.0 );
+    vec4  diffuse = Kd*diffuseProduct;
+
+    float Ks = pow( max(dot(N, H), 0.0), shininess );
+    vec4  specular = Ks * specularProduct;
+    
+    if( dot(L, N) < 0.0 ) {
+	specular = vec4(0.0, 0.0, 0.0, 1.0);
+    } 
+
+    gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+    fColor = ambient + diffuse +specular;
+    fColor.a = 1.0;
+
+    fTexCoords = vTexCoords;
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">#version 300 es
+
+precision mediump float;
+
+in vec2 fTexCoords;
+in vec4 fColor;
+out vec4 oColor;
+
+uniform sampler2D u_texture;
+
+void
+main()
+{
+    oColor = texture(u_texture, fTexCoords) * fColor;
+}
+</script>
+
+<script type="text/javascript" src="shadedCube_js/webgl-utils.js"></script>
+<script type="text/javascript" src="shadedCube_js/initShaders.js"></script>
+<script type="text/javascript" src="shadedCube_js/MV.js"></script>
+<script type="text/javascript" src="shadedCube_js/shadedCube.js"></script>
+
+
+
+<canvas id="gl-canvas" width="512" height="512">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+
+
+</body></html>
