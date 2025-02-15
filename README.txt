@@ -59,7 +59,3 @@ Part 2:
 A scene containing a rotating sphere and a rotating plant object on top of it. The sphere is applied a sand texture while the plant is a custom made object made up of .obj, .mtl and plant texture files (.png).
 
 Open the html file located at folder "Assignment 5\Part 1\Experiment5_Part1_base\Experiment5_Part1_base\public_html" in Google Chrome. Use an IDE like Webstorm to aviod CORS errors.
-
-
-
-
